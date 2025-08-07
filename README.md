@@ -23,13 +23,13 @@ Log_Archive_tool/
 ```bash
 # 1️⃣ Clone the repository
 git clone https://github.com/AnweshaPanigrahi/Log_Archive_tool.git
-cd Log_Archive_tool
+cd logs
 
 # 2️⃣ Make the script executable
-chmod +x archive_logs.sh
+chmod +x old_archive.sh
 
 # 3️⃣ Run the script
-./archive_logs.sh
+./old_archive.sh
 ```
-./log_archiver.sh
+
 
