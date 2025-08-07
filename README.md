@@ -13,7 +13,9 @@ This Bash script is designed to automate the process of archiving `.log` files t
 
 **#Folder structure**
 Log_Archive_tool/
-├── archive/               # Contains compressed archive files
+
+├── archive/   
+# Contains compressed archive files
 ├── logs/                  # Stores sample logs for processing
 ├── log_archiver.sh        # Bash script that automates archiving
 └── log_tool.log           # Log of all operations
