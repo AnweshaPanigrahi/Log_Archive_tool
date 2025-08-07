@@ -1,29 +1,31 @@
 #!/bin/bash
 
-LOG_DIR="/home/ubuntu/logs"
+# Directory where logs are stored
+LOG_DIR="./logs"
+
+# Directory where archives will be stored
 ARCHIVE_DIR="$LOG_DIR/archive"
-ARCHIVE_NAME="old_logs_$(date +%Y-%m-%d).tar.gz"
+mkdir -p "$ARCHIVE_DIR"
 
-# Create archive directory if it doesn't exist
-if [ ! -d "$ARCHIVE_DIR" ]; then
-    mkdir "$ARCHIVE_DIR"
+# Find logs older than 7 days
+FILES_TO_ARCHIVE=$(find "$LOG_DIR" -maxdepth 1 -name "*.log" -type f -mtime +7)
+
+# Check if any file was found
+if [ -z "$FILES_TO_ARCHIVE" ]; then
+  echo "No old log files to archive."
+  exit 0
 fi
 
-# Find .log files older than 7 days
-OLD_FILES=$(find "$LOG_DIR" -maxdepth 1 -name "*.log" -type f -mtime +7)
+# Archive file name
+ARCHIVE_FILE="$ARCHIVE_DIR/old_logs_$(date +%F).tar.gz"
 
-# Check if any files found
-if [ -n "$OLD_FILES" ]; then
-    # Archive the files
-    tar -czf "$ARCHIVE_DIR/$ARCHIVE_NAME" $OLD_FILES
+# Archive and print file names
+echo "Archiving the following files:"
+for file in $FILES_TO_ARCHIVE; do
+  echo "  - $(basename "$file")"
+done
 
-    # Delete the original files
-    if [ $? -eq 0 ]; then
-        echo "Archived files into $ARCHIVE_NAME"
-        rm $OLD_FILES
-    else
-        echo "Failed to archive files."
-    fi
-else
-    echo "No log files older than 7 days to archive."
-fi
+# Create archive
+tar -czf "$ARCHIVE_FILE" $FILES_TO_ARCHIVE
+
+echo "Archived files into $(basename "$ARCHIVE_FILE")"
